@@ -28,54 +28,53 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    //add an employee
-    public Employee addEmployee(Employee employee) {
-
-        //validate the request
-        validateRequest(employee);
+    /**
+     * method to add an employee
+     * @param employee
+     * @return
+     */
+    public Employee addEmployee(Employee employee,String name, String phone) {
+        //set a default empCode
         employee.setEmpCode(UUID.randomUUID().toString());
+        employee.setName(name);
+        employee.setPhone(phone);
 
         return employeeRepository.save(employee);
     }
 
-    //list all the employees
+    /**
+     * method used to list all the employees
+     * @return List objects
+     */
     public List<Employee> findAllEmployees() {
         return employeeRepository.findAll();
     }
 
+    /**
+     * method used to update employee
+     * @param employee represents the employee object
+     * @return Employee object
+     */
     public Employee updateEmployee(Employee employee) {
         return employeeRepository.save(employee);
     }
 
-    //find an Employee by id
+    /**
+     * method used to find an Employee by id
+     * @param id represents employeeId
+     * @return Employee object
+     */
     public Employee findEmployeeById(Long id) {
         return employeeRepository.findEmployeeById(id)
                 .orElseThrow(() -> new UserNotFoundException("User by " + id + "id not found"));
     }
 
-    //delete an employee
+    /**
+     * method used to delete an employee
+     * @param id
+     */
     public void deleteEmployee(Long id) {
         employeeRepository.deleteEmployeeById(id);
     }
 
-    /**
-     * Validate the request
-     **/
-    public void validateRequest(Employee request) {
-
-        if (isNull(request))
-            throw new ConstraintViolationException("Request cannot be null", null);
-
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-        Set<ConstraintViolation<Employee>> violations = validator.validate(request);
-
-        if (!violations.isEmpty()) {
-            throw new ConstraintViolationException("Missing required fields", violations);
-        }
-        if (request.getSalary() <= 0 ) {
-            throw new ConstraintViolationException("Salary invalid", null);
-        }
-
-    }
 }
