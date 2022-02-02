@@ -33,11 +33,10 @@ public class EmployeeService {
      * @param employee
      * @return
      */
-    public Employee addEmployee(Employee employee,String name, String phone) {
+    public Employee addEmployee(Employee employee,String name) {
         //set a default empCode
         employee.setEmpCode(UUID.randomUUID().toString());
         employee.setName(name);
-        employee.setPhone(phone);
 
         return employeeRepository.save(employee);
     }

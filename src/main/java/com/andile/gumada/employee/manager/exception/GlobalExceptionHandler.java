@@ -31,17 +31,9 @@ public class GlobalExceptionHandler {
     @ResponseStatus
     public ResponseEntity<?> handleGlobalException(Exception exception,
                                                    WebRequest webRequest){
-        log.error(":{Application failure occurred!}",exception);
+        log.error(":Application failure occurred! :{}",exception);
         ErrorDetails errorDetails = new ErrorDetails(new Date(),exception.getMessage(),webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    //handling custom validation errors
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> customValidationErrorHandle(MethodArgumentNotValidException exception){
-        log.error(":{}",exception);
-        ErrorDetails errorDetails = new ErrorDetails(new Date(),"Validator Error",exception.getBindingResult().getFieldError().getDefaultMessage());
-        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
-    }
 }

@@ -18,12 +18,11 @@ public class ApplicationController {
 
     private final EmployeeService employeeService;
 
-    @RequestMapping(path = "new",produces = "application/json",method = RequestMethod.POST,consumes = "application/json")
+    @RequestMapping(path = "employees",produces = "application/json",method = RequestMethod.POST,consumes = "application/json")
     public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee,
-                                                @RequestParam String name,
-                                                @RequestParam String phone){
-        Employee newEmployee = employeeService.addEmployee(employee,name,phone);
-        log.info("Request for adding a new employee {}",employee,name,phone);
+                                                @RequestParam String name){
+        Employee newEmployee = employeeService.addEmployee(employee,name);
+        log.info("Request for adding a new employee {}",employee,name);
         return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
     }
 }
